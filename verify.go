@@ -27,14 +27,6 @@ type PayoutVerificationResponseData struct {
 	UpdatedAt     string `json:"updated_at"`
 }
 
-func (budpayClient *BudPayClient) VerifyPayout(reference string) (*PayoutVerificationResponse, error) {
-	var response PayoutVerificationResponse
-	if err := budpayClient.Get(fmt.Sprintf("v2/payout/:%s", reference), &response); err != nil {
-		return nil, fmt.Errorf("error occured while verifying transactions %v", err)
-	}
-	return &response, nil
-}
-
 // TODO: list all transfer payouts
 
 type IncomingPaymentVerificationResponse struct {
@@ -91,9 +83,17 @@ type IncomingPaymentVerificationResponseCustomer struct {
 type IncomingPaymentVerificationResponsePlan struct {
 }
 
+func (budpayClient *BudPayClient) VerifyPayout(reference string) (*PayoutVerificationResponse, error) {
+	var response PayoutVerificationResponse
+	if err := budpayClient.Get(fmt.Sprintf("v2/payout/:%s", reference), &response); err != nil {
+		return nil, fmt.Errorf("error occured while verifying transactions %v", err)
+	}
+	return &response, nil
+}
+
 func (budpayClient *BudPayClient) VerifyIncomingPayment(reference string) (*IncomingPaymentVerificationResponse, error) {
 	var response IncomingPaymentVerificationResponse
-	if err := budpayClient.Get(fmt.Sprintf("transaction/verify/:%s", reference), &response); err != nil {
+	if err := budpayClient.Get(fmt.Sprintf("v2/transaction/verify/:%s", reference), &response); err != nil {
 		return nil, fmt.Errorf("error occured while verifying transactions %v", err)
 	}
 	return &response, nil
