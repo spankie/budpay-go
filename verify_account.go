@@ -53,11 +53,7 @@ func (budpayClient *BudPayClient) VerifyAccountDetails(receiver *AccountDetails)
 
 		return nil, fmt.Errorf("could not fetch account details")
 	default:
-		return &AccountDetailsResponse{
-			Success: false,
-			Message: "currency verification not supported",
-			Data:    "account_verification unavailable",
-		}, nil
+		return nil, fmt.Errorf("only NGN is supported for account verification")
 
 	}
 
