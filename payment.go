@@ -44,7 +44,8 @@ type SinglePaymentRequest struct {
 
 type SinglePaymentResponse struct {
 	ResponseSuccess
-	Data PaymentResponse `json:"data"`
+	Error map[string][]string `json:"error"`
+	Data  PaymentResponse     `json:"data"`
 }
 
 type BulkPaymentRequest struct {

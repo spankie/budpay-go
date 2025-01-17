@@ -54,6 +54,62 @@ func TestSinglePayment(t *testing.T) {
 	require.NotNil(t, paymentResponse)
 }
 
+func TestSinglePaymentWithErrors(t *testing.T) {
+	requestResponseJSON := `{
+    "status": false,
+    "message": "Incomplete request",
+    "error": {
+        "currency": [
+            "The currency field is required."
+        ],
+        "amount": [
+            "The amount field is required."
+        ],
+        "bank_code": [
+            "The bank code field is required."
+        ],
+        "bank_name": [
+            "The bank name field is required."
+        ],
+        "account_number": [
+            "The account number field is required."
+        ],
+        "narration": [
+            "The narration field is required."
+        ]
+    }
+}`
+
+	hclient := &http.Client{Transport: RoundTripFunc(func(req *http.Request) *http.Response {
+		require.Equal(t, testBaseURL+"v1/bank_transfer", req.URL.String())
+		require.Equal(t, http.MethodPost, req.Method)
+		require.Equal(t, "application/json", req.Header.Get("Accept"))
+		require.Equal(t, "application/json", req.Header.Get("Content-Type"))
+		require.Equal(t, "Bearer testApiKey", req.Header.Get(AuthorizationHeaderKey))
+
+		return &http.Response{
+			StatusCode: http.StatusOK,
+			Body:       io.NopCloser(strings.NewReader(requestResponseJSON)),
+		}
+	})}
+
+	client := BudPayClient{HTTPClient: hclient, apiKey: "testApiKey", encryptionkey: []byte("encryptKey"), BaseURL: testBaseURL}
+
+	singlePaymentRequest := &SinglePaymentRequest{
+		Currency: "NGN",
+		Amount:   "7000",
+		BankCode: "000013",
+		BankName: "Budpay Bank",
+		// AccountNumber: "0000101001",
+		Narration: "school fees",
+	}
+	paymentResponse, err := client.SinglePayment(singlePaymentRequest)
+	require.NoError(t, err)
+	require.NotNil(t, paymentResponse)
+	require.Equal(t, "The account number field is required.", paymentResponse.Error["account_number"][0])
+	require.Equal(t, "The currency field is required.", paymentResponse.Error["currency"][0])
+}
+
 func TestBulkPayment(t *testing.T) {
 	requestResponseJSON := `{"status":true,"message":"Successful Message","data":[        {
 		"reference": "trf_j51m4695fk57nf",

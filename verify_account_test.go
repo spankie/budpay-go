@@ -42,9 +42,9 @@ func TestVerifyAccountDetails(t *testing.T) {
 	accountDetails := &AccountDetails{
 		BankCode:      "000001",
 		AccountNumber: "0123456789",
+		Currency:      "NGN",
 	}
 	response, err := client.VerifyAccountDetails(accountDetails)
 	require.NoError(t, err)
 	require.NotNil(t, response)
-
 }
