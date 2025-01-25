@@ -40,19 +40,22 @@ type IncomingPaymentVerificationResponse struct {
 }
 
 type IncomingPaymentVerificationResponseData struct {
-	Amount            string                    `json:"amount"`
-	Currency          string                    `json:"currency"`
-	Status            string                    `json:"status"`
-	TransactionDate   string                    `json:"transaction_date"`
-	Reference         string                    `json:"reference"`
-	Domain            string                    `json:"domain"`
-	GatewayResponse   string                    `json:"gateway_response"`
-	Channel           string                    `json:"channel"`
-	IPAddress         string                    `json:"ip_address"`
-	Log               IncomingPaymentWebhookLog `json:"log"`
-	TransactionFees   string                    `json:"transaction_fees"`
-	TransactionFee    string                    `json:"transaction_fee"`
-	TransactionCharge string                    `json:"transaction_charge"`
+	Amount                  string                    `json:"amount"`
+	Currency                string                    `json:"currency"`
+	Status                  string                    `json:"status"`
+	TransactionDate         string                    `json:"transaction_date"`
+	Reference               string                    `json:"reference"`
+	Domain                  string                    `json:"domain"`
+	GatewayResponse         string                    `json:"gateway_response"`
+	Channel                 string                    `json:"channel"`
+	IPAddress               string                    `json:"ip_address"`
+	Log                     IncomingPaymentWebhookLog `json:"log"`
+	Fees                    string                    `json:"fees"`
+	OriginatorName          string                    `json:"originator_name"`
+	OriginatorAccountNumber string                    `json:"originator_account_number"`
+	TransactionFees         string                    `json:"transaction_fees"`
+	TransactionFee          string                    `json:"transaction_fee"`
+	TransactionCharge       string                    `json:"transaction_charge"`
 }
 
 type IncomingPaymentWebhookLog struct {
