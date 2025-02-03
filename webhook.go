@@ -2,6 +2,10 @@ package budpay
 
 import "time"
 
+const (
+	UpdatedByAutoRefundSystem = "AutoRefundSystem"
+)
+
 type BudpayTime struct {
 	time.Time
 }
@@ -110,4 +114,6 @@ type OutgoingData struct {
 	Status        string `json:"status"`
 	CreatedAt     string `json:"created_at"`
 	UpdatedAt     string `json:"updated_at"`
+	// the value of UpdatedBy is `AutoRefundSystem` when a refund for GHS was made
+	UpdatedBy string `json:"updated_by"`
 }
